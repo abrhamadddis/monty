@@ -1,18 +1,13 @@
-#ifndef MONTY_H
-#define MONTY_H
+#ifndef _MONTY_H_
+#define _MONTY_H_
 
-/**
- * Libaries
- */
+#define _POSIX_C_SOURCE  200809L
+#define _GNU_SOURCE
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/types.h>
-#include <unistd.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-#define delim "\n\r\t "
-#define UNUSED(x) (void)(x)
+#include <ctype.h>
 
 /**
  * struct stack_s - doubly linked list representation of a stack (or queue)
@@ -21,7 +16,7 @@
  * @next: points to the next element of the stack (or queue)
  *
  * Description: doubly linked list node structure
- * for stack, queues, LIFO, FIFO notrebloh project
+ * for stack, queues, LIFO, FIFO Holberton project
  */
 typedef struct stack_s
 {
@@ -31,12 +26,12 @@ typedef struct stack_s
 } stack_t;
 
 /**
- * struct instruction_s - opcoode and its function
+ * struct instruction_s - opcode and its function
  * @opcode: the opcode
  * @f: function to handle the opcode
  *
  * Description: opcode and its function
- * for stack, queues, LIFO, FIFO notrebloh project
+ * for stack, queues, LIFO, FIFO Holberton project
  */
 typedef struct instruction_s
 {
@@ -44,55 +39,55 @@ typedef struct instruction_s
 	void (*f)(stack_t **stack, unsigned int line_number);
 } instruction_t;
 
-/* Variables */
 /**
- * struct variables - global variables to be used
- * @lineptr: lineptr for getline
- * @line_number: returns what line_number is getline reading
- * @value: string value of second argument in file
- * @int_val: convering value to int
- * @cmd: string value of first argument in file
- * @ret_val: return value for main file
+ * struct help_s - helper struct to use with one external variable
+ * @fp: file descriptor
+ * @push_n: value to push
+ * @buff: buffer for getline
+ * @stack_s: pointer to local stack
+ * @data: 1 if data type is stack, 0 otherwise
  */
-typedef struct variables
+typedef struct help_s
 {
-	char *lineptr;
-	unsigned int line_number;
-	char *value;
-	int int_val;
-	char *cmd;
-	int ret_val;
-	char *flag;
-} vars;
+	FILE *fp;
+	char *push_n;
+	char *buff;
+	stack_t *stack_s;
+	int data;
+} help_t;
 
-/* global variables */
-extern vars gvars;
+typedef stack_t dlistint_t;
+extern help_t *main_s;
 
-/* Operators */
-void op_push(stack_t **stack, unsigned int line_number);
-void op_pall(stack_t **stack, unsigned int line_number);
-void op_pint(stack_t **stack, unsigned int line_number);
-void op_pop(stack_t **stack, unsigned int line_number);
-void op_swap(stack_t **stack, unsigned int line_number);
-void op_add(stack_t **stack, unsigned int line_number);
-void op_nop(stack_t **stack, unsigned int line_number);
-void op_sub(stack_t **stack, unsigned int line_number);
-void op_mul(stack_t **stack, unsigned int line_number);
-void op_pchar(stack_t **stack, unsigned int line_number);
-void op_mod(stack_t **stack, unsigned int line_number);
-void op_div(stack_t **stack, unsigned int line_number);
-void op_pstr(stack_t **stack, unsigned int line_number);
-void op_rotl(stack_t **stack, unsigned int line_number);
-void op_rotr(stack_t **stack, unsigned int line_number);
-void op_queue(stack_t **stack, unsigned int line_number);
-void op_stack(stack_t **stack, unsigned int line_number);
 
-/* Helper */
-void free_l(stack_t *head);
-int find_op(stack_t **head);
-int tokenizer(char *str);
-int check_val(char *str);
-int list_len(stack_t **h);
-int newline_check(char *str);
+void file_err(char *);
+void malloc_fail(void);
+int isnum(char *);
+void push_o(stack_t **, unsigned int);
+void pall_o(stack_t **, unsigned int);
+void pint_o(stack_t **, unsigned int);
+void pop_o(stack_t **, unsigned int);
+void swap_o(stack_t **, unsigned int);
+void add_o(stack_t **, unsigned int);
+void nop_o(stack_t **, unsigned int);
+void sub_o(stack_t **, unsigned int);
+void div_o(stack_t **, unsigned int);
+void mul_o(stack_t **, unsigned int);
+void mod_o(stack_t **, unsigned int);
+void pstr_o(stack_t **, unsigned int);
+void rotl_o(stack_t **, unsigned int);
+void rotr_o(stack_t **, unsigned int);
+void pchar_o(stack_t **, unsigned int);
+void stack_o(stack_t **, unsigned int);
+void queue_o(stack_t **, unsigned int);
+void main_loop(instruction_t *);
+void free_stuff(void);
+int execute_command(char *, int, instruction_t []);
+size_t print_dlistint(const dlistint_t *);
+void free_dlistint(dlistint_t *);
+int delete_dnodeint_head(dlistint_t **);
+dlistint_t *add_dnodeint(dlistint_t **, const int);
+size_t dlistint_len(const dlistint_t *);
+dlistint_t *add_dnodeint_end(dlistint_t **, const int);
 
-#endif /* MONTY_H */
+#endif /* _MONTY_H_ */
